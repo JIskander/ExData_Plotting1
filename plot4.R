@@ -10,8 +10,15 @@ DT<-fread(fname,sep=";",header = FALSE,na.strings = "?",stringsAsFactors = FALSE
 setnames(DT,colnames(DT), as.character(header))
 DT=DT[,FullDate:=as.character(strptime(paste(Date,Time),"%d/%m/%Y %H:%M:%S"))]
 
-png('plot3.png')
-graphics.off()
+
+png('plot4.png')
+
+par(mfrow=c(2,2))
+
+plot(as.POSIXct(DT$FullDate),DT$Global_active_power, type="l",xlab="",ylab = "Global Active Power")
+
+plot(as.POSIXct(DT$FullDate),DT$Voltage, type="l",xlab="datetime",ylab="Voltage")
+
 plot(as.POSIXct(DT$FullDate),DT$Sub_metering_1, type="l",xlab="",ylab = "Energy sub metering",ylim=range(DT$Sub_metering_1))
 par(new=TRUE)
 plot(as.POSIXct(DT$FullDate),DT$Sub_metering_2, type="l",xlab="",col="red",axes=FALSE,ylab="",ylim=range(DT$Sub_metering_1))
@@ -19,4 +26,7 @@ par(new=TRUE)
 plot(as.POSIXct(DT$FullDate),DT$Sub_metering_3, type="l",xlab="",col="blue",axes=FALSE,ylab="",ylim=range(DT$Sub_metering_1))
 legend(x="topright",lty=c(1,1,1),c('Sub_metering_1','Sub_metering_2','Sub_metering_3'),
        col=c("black","red","blue")) 
+
+plot(as.POSIXct(DT$FullDate),DT$Global_reactive_power, type="l",xlab="datetime",ylab = "Global_reactive_power")
+
 dev.off()
